@@ -3,7 +3,7 @@ const questions = [
         type: 'list',
         name: 'option',
         message: 'What would you like to do?',
-        choices:[process.env.CREATE_TASK, 'Manage Tasks', 'Run Tasks','Config']
+        choices:[process.env.CREATE_TASK, 'Manage Tasks', 'Run Tasks','Config','Exit']
     }
 ]
 

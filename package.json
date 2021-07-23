@@ -12,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^10.0.0",
+    "fs": "*",
     "inquirer": "^8.1.2",
     "inquirer-file-tree-selection-prompt": "^1.0.12",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "path": "^0.12.7"
   }
 }
