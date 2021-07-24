@@ -12,6 +12,7 @@ let mainMenuQuestions = require('./questions/mainMenu')
 
 //Importing Modules
 const createTask = require('./createTask')
+const manageTask = require('./ManageTask')
 
 //Main Program
 main()
@@ -25,6 +26,8 @@ async function main (){
 
         if(answers.option == process.env.CREATE_TASK)
             await createTask()
+        if(answers.option == process.env.MANAGE_TASK)
+            await manageTask()
         else if(answers.option == 'Exit')
             process.exit(0);
     }while(true)

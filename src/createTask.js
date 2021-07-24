@@ -2,6 +2,8 @@ const inquirer = require('inquirer')
 const Task = require('./Task').Task
 const fs = require('fs')
 const path = require('path')
+const readline = require('readline');
+//const promisify = require('./utilidades').promisify
 const nameOfTaskQuestion = require('./questions/createTask').nameOfTask
 const nameOfFileQuestion = require('./questions/createTask').nameOfFile
 const exControlQuestion = require('./questions/createTask').exControl
@@ -11,8 +13,8 @@ inquirer.registerPrompt('fileTree', require('inquirer-file-tree-selection-prompt
 async function main(){
     process.stdout.write('\033c');
     console.log('***************************************************************')
-    console.log('\t\tCREATE TASK MODULE\n')
-    
+    console.log('\t\tCREATE TASK MODULE\n')        
+
     const nameOfTask = await inquirer.prompt(nameOfTaskQuestion)
     const nameOfFile = await inquirer.prompt(nameOfFileQuestion)
     const executionControl = await inquirer.prompt(exControlQuestion)
@@ -30,9 +32,24 @@ async function main(){
         updateDataFromFile(completeRoute, newTask)
     else        
         notExistFile(newTask, completeRoute)
-    
+
+    await askQuestion("Press enter to continue");
     return
+    //await new Promise(resolve => setTimeout(resolve, 3000));
 }
+
+function askQuestion(query) {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+
+    return new Promise(resolve => rl.question(query, ans => {
+        rl.close();
+        resolve(ans);
+    }))
+}
+
 
 function fileExist( path ){
     if (fs.existsSync(path)) {
@@ -42,13 +59,12 @@ function fileExist( path ){
 }
 
 async function notExistFile(objectToSerialize, path){
-    console.log(' Does not exists ')    
+    console.log('Creating data file ')    
     let arr = []
     arr.push(objectToSerialize)
     let serializedObject = JSON.stringify(arr)
     fs.writeFileSync(path, serializedObject )
     console.log('Task added succesfully')
-    console.log('Press any key to continue.');
     
     return true
 }
