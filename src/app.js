@@ -28,6 +28,8 @@ async function main (){
             await createTask()
         if(answers.option == process.env.MANAGE_TASK)
             await manageTask()
+        if(answers.option == process.env.RUN_TASK)
+            await manageTask()
         else if(answers.option == 'Exit')
             process.exit(0);
     }while(true)

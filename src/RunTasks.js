@@ -44,23 +44,6 @@ async function deleteTask(){
     return true
 }
 
-async function updateTask(){
-    let pathOfDataFile = process.env.PATH_OF_DATA
-    let nameOfDataFile = process.env.NAME_OF_DATA_FILE
-
-    let completeRoute = path.join( global.__rootDir,pathOfDataFile,nameOfDataFile)
-    console.log('\nRoute for searching data: ', completeRoute ,'\n')
-
-    if( !fileExist(completeRoute) ){
-        console.log('No tasks registered')
-        return false
-    }
-    let tasks = retrieveTasks(completeRoute)
-    const action = await inquirer.prompt(questionTask(tasks))
-    console.log("Select the path of the task")
-    const pathToTask = await inquirer.prompt(nameOfFile)    
-    updateTaskFromFile(completeRoute,action.option, pathToTask, tasks)
-}
 
 function fileExist( path ){
     if (fs.existsSync(path)) {
@@ -87,30 +70,6 @@ function questionTask(tasks){
     }
 }
 
-function removeTaskFromFile( path, task, tasks ){
-    let newTasks = tasks.filter( tsk => tsk.name != task )
-    if( newTasks.length < 1 ){
-        try {
-            fs.unlinkSync(path)
-            //file removed
-        } catch(err) {
-            console.error(err)
-        }
-    }
-    else{
-        let serializedObject = JSON.stringify(newTasks)
-        fs.writeFileSync(path, serializedObject )
-    }
-}
-
-function updateTaskFromFile( path, taskName, newPath, tasks){
-    let prevTaskindex = tasks.findIndex( task => task.name == taskName)
-    let newTask = new Task( taskName, newPath, tasks[prevTaskindex].execControl  )
-    let newTasks = tasks.filter( task => task.name != taskName)
-    newTasks.push( newTask )
-    let serializedObject = JSON.stringify(newTasks)
-    fs.writeFileSync(path, serializedObject )
-}
 
 
 module.exports = main
